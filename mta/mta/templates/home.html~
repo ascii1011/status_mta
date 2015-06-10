@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{% block title_sub %} - Status{% endblock %}
+
+{% block jumbotron %}{% endblock %}
+
+{% block content %}
+
+
+<div class="row" style="border: thin solid!important;">
+  <div class="col-sm-12">
+
+<form id="form-check-service" class="form-inline">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="InputService">Choose a service</label>
+
+    <select class="form-control" id="InputService">
+      {% if services %}
+        <option value="" disabled selected>Select One</option>
+        {% for service in services %}
+          <option value="{{ service.0 }}">{{ service.1 }}</option>
+        {% endfor %}
+      {% endif %}
+    </select>
+
+  </div>
+  <button type="submit" class="btn btn-primary">Check Service Status</button>
+</form>
+
+</div>
+</div>
+
+<div class="row">
+  <div class="col-sm-8">
+    <div id="results"></div>
+  </div>
+
+  <div class="col-sm-4">
+    {% if request.user.is_authenticated %}
+        <h3>Favorites</h3>
+    {% endif %}
+    <div id="favorites">
+
+      {% comment %}
+      {% if favorites %}
+        {% for favorite in favorites %}
+          <div class="favorite-line fav" data-line="{{ favorite.line }}">{{ favorite.line }}: {{ favorite.status }}</div>
+        {% endfor %}
+      {% endif %}
+      {% endcomment %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'js/status.js' %}"></script>
+{% endblock %}

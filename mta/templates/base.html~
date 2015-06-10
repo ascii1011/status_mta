@@ -1,0 +1,61 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>MTA Transit{% block title_sub %}{% endblock %}</title>
+
+    {% comment %}
+    bootstrap example template
+    http://getbootstrap.com/examples/jumbotron/
+    {% endcomment %}
+
+    {% include 'base_css.html' %}
+  </head>
+
+  <body>
+
+    {% block nav %}
+      {% include 'navigation.html' %}
+    {% endblock %}
+
+    {#% block jumbotron %#}
+      {#% include 'jumbotron.html' %#}
+    {#% endblock %#}
+
+    <div class="jumbotron">
+      <div class="container">
+	{% block content %}
+	  {% include 'content.html' %}
+	{% endblock %}
+      </div>
+    </div>
+    
+    {% block footer %}
+      {% include 'footer.html' %}
+    {% endblock %}
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+    {% block scripts %}{% endblock %}
+    <script>
+    {% block javascript %}{% endblock %}
+    </script>
+    
+  </body>
+</html>

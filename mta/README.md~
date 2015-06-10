@@ -1,0 +1,12 @@
+
+
+1. create project folder
+2. virtualenv env
+3. source env/bin/activate
+4. clone this repo
+5. cd status_mta/
+6. pip install -r requirements.txt
+7. cd mta/
+8. ./manage.py migrate
+9. ./manage.py syncdb  #create an admin
+10. ./manage.py runserver <ip_address>:<port>

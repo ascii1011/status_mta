@@ -1,0 +1,38 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+class BaseModel(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated= models.DateTimeField(auto_now_add=False, auto_now=True)
+
+    class Meta:
+        abstract = True
+    
+    
+class BaseLine(BaseModel):
+    service = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    code = models.CharField(max_length=100, blank=True, null=True)
+    status = models.TextField(blank=True, null='')
+    text = models.TextField(blank=True, null='')
+    #date = models.DateField(blank=True, null='')
+    #time = models.TimeField(blank=True, null='')
+
+    def __unicode__(self):
+        return "%s" % str( self.name )
+
+    class Meta:
+        abstract = True
+    
+
+class Line(BaseLine): pass
+
+class FavoriteLine(BaseModel):
+    user = models.ForeignKey(User)
+    service = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    code = models.CharField(max_length=100, blank=True, null=True)
+    status = models.TextField(blank=True, null='')
+
+    def __unicode__(self):
+        return "%s" % str( self.name )

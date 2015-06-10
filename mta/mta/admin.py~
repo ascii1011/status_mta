@@ -1,0 +1,21 @@
+from django.contrib import admin
+
+from .models import Line, FavoriteLine
+
+
+class LineAdmin(admin.ModelAdmin):
+    list_display = ["__unicode__", "updated"]
+
+    class Meta:
+        model = Line
+
+admin.site.register(Line, LineAdmin)
+
+
+class FavoriteLineAdmin(admin.ModelAdmin):
+    list_display = ["user", "__unicode__", "updated"]
+
+    class Meta:
+        model = FavoriteLine
+
+admin.site.register(FavoriteLine, FavoriteLineAdmin)
