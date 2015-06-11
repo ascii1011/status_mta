@@ -1,0 +1,16 @@
+
+.favorite-line {
+  margin-bottom: 4px;
+}
+
+.favorite-line img {
+  margin-right: 8px;
+}
+.favorite-line2 {
+    border-radius: 10px 10px 10px 10px!important;
+    -moz-border-radius: 10px 10px 10px 10px!important;
+    -webkit-border-radius: 10px 10px 10px 10px!important;
+    border: 2px solid #000000!important;
+    background-color: #2c5fb8!important;
+    color: #fff;
+}

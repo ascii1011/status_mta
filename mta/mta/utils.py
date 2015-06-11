@@ -85,7 +85,7 @@ class Favorites(object):
         print '--get_db:'
         if self.is_auth:
             try:
-                db_favorites = FavoriteLine.objects.filter(user=self.user).values('name', 'code','status')
+                db_favorites = FavoriteLine.objects.filter(user=self.user).values('name', 'code','status', 'service')
                 
                 print 'fav count:', str(len(db_favorites))
                 return [x for x in db_favorites]

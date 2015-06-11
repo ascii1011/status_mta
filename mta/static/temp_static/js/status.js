@@ -1,21 +1,56 @@
 
+function row_image(src) {
+    return '<img src="'+src+'" width="25" height="25" />';
+}
+
+function favorite_row(data) {
+    var img = row_image( 'static/img/favorites-remove-icon.jpg' );
+    var $fav = $('<button class="btn btn-primary favorite-line" type="submit"></button>');
+    $fav.attr('data-name', data.name);
+    $fav.attr('data-status', data.status);
+    $fav.attr('data-service', data.service);
+    $fav.attr('data-code', data.code);
+    $fav.append( img );
+    $fav.append( data.service+' ['+data.name+'] --- "'+data.status+'"' );
+
+    return $fav;
+};
+
+
+function line_row(service, data) {
+
+    var $fav = $('<div id="favorite-'+data.code+'" class="favor"></div>');
+    $fav.attr('data-name', data.name);
+    $fav.attr('data-status', data.status);
+    $fav.attr('data-service', service);
+    $fav.attr('data-code', data.code);
+
+    var img = row_image( 'static/img/favorites-add-icon.jpg' );
+    var $btn = $('<button class="btn btn-primary" type="submit"></button>');
+
+    if (data.is_favorite == 1) {
+	img = '';
+	btn = $('');
+    } else {
+	$btn.append( img );
+	$fav.append( $btn );
+    }
+
+    return $fav;
+};
+
 
 function get_favorites(){
     var $favorites = $('#favorites');
-    //console.log('--get_favorites:');
     $favorites.empty();
-    //console.log('----emptied!');
     $.ajax({
 	url: "favorites/",
         type: "GET",
         data: {},
 	
         success: function(results) {
-	    console.log('----get_favorites::success!');
-	    console.log('results:');
-	    console.dir( results );
             $.each(results.favorites, function( i, data ) {
-		var favorite = '<div class="favorite-line" data-service="'+data.service+'" data-code="'+data.code+'">'+data.name+': '+data.status+'</div>';
+		favorite = favorite_row( data );
 		$favorites.append( favorite );
             });
 
@@ -23,12 +58,6 @@ function get_favorites(){
     });
     
 };
-
-
-$(document).on('click', 'H3', function() {
-    get_favorites();
-} );
-
 
 
 $(document).ready(function() {
@@ -42,25 +71,18 @@ $(document).on('click', '.favorite-line', function(event) {
     var name = $(this).attr('data-name');
     var code = $(this).attr('data-code');
     var status = $(this).attr('data-status');
-
+    var data = { service: service, name: name, code: code, status: status };
 
     var id = "#favorite-"+code;
-    //var status = $('#'+id).
-    //var favorite = '<td><div id="'+id+'" class="favor" data-status="'+status[line].status+'" data-line="' + results.label + '-' + status[line].name + '">on</div></td>';
     $(this).remove();
-    //$(id).prop('disabled', false);
-
-    var fav_chk = 'static/img/favorites-add-icon.jpg'
-    var line_img = '<img src="'+fav_chk+'" width="50" height="50" />';
-    var favorite_div = '<div data-name="'+name+'" data-status="'+status+'" data-code="'+code+'" data-service="'+service+'">'+line_img+'</div>';
-    $(id).append(favorite_div);
     $.ajax({
 	url: "favorite/remove/",
         type: "GET",
-        data: { service: service, name: name, code: code, status: status },
+        data: data,
 	
         success: function(results) {
-	    console.log( 'success' );
+	    var $row = line_row( service, data );
+	    $(id).append( $row );
         },
     });
     
@@ -69,46 +91,37 @@ $(document).on('click', '.favorite-line', function(event) {
 $(document).on('click', '.favor', function(event) {
     event.preventDefault();
 
-    var service = $(this).find('div').attr('data-service');
-    var name = $(this).find('div').attr('data-name');
-    var code = $(this).find('div').attr('data-code');
-    var status = $(this).find('div').attr('data-status');
+    var service = $(this).attr('data-service');
+    var name = $(this).attr('data-name');
+    var code = $(this).attr('data-code');
+    var status = $(this).attr('data-status');
+    var data = { service: service, name: name, code: code, status: status };
+
     $(this).empty();
-    console.log( 'adding '+name );
     $.ajax({
 	url: "favorite/add/",
         type: "GET",
-        data: { service: service, name: name, code: code, status: status },
+        data: data,
 	
         success: function(results) {
-	    console.log( 'added results:' );
-            //console.dir( results );
-	    $('#favorites').append('<div class="favorite-line" data-service="'+service+'" data-name="'+name+'" data-code="'+code+'" data-status="'+status+'">'+name+': '+status+'</div>');
-	    //get_favorites();
+	    var $row = favorite_row( data );
+	    $('#favorites').append( $row );
         },
     });
 } );
 
 
 $('#form-check-service').on('submit', function(event){
-    //event.defaultPrevent;
     event.preventDefault();
 
-    //console.log("Tearing down Previous");  // sanity check
-    //if exists, tear down previous results
     var $res = $('#results');
+    //tear down
     $res.empty();
-    
-    console.log("building");
+
     //now build backup
     var service = $("#InputService option:selected").text();
-    console.log('service:'+service);
     var $h3 = $('<h3></h3>');
     $res.append( $h3.html(service+' querying information now...') );
-    console.log('gathering results');
-    //console.log("service selected: " + service);
-    //console.dir(service);
-    //console.log("ajax");
     $.ajax({
 	url: "service/status/",
         type: "GET",
@@ -116,7 +129,6 @@ $('#form-check-service').on('submit', function(event){
 	
         success: function(results) {
 	    var status = results.status;
-            console.log('Successful Ajax Response Started');
 	    
 	    $res.append( $h3.html(results.label+' Status Updated: '+results.timestamp) );
 
@@ -126,28 +138,26 @@ $('#form-check-service').on('submit', function(event){
 	    var fav_chk = 'static/img/favorites-add-icon.jpg'
 
             $.each(status, function( i, line ) {
-		console.dir(line)
-		var line_id = 'favorite-'+line.code;
-		
-		var line_img = '<img src="'+fav_chk+'" width="50" height="50" />';
-		if (line.is_favorite == 1) {
-		    line_img = '';
-		    }
-		var favorite_div = '<div data-name="'+line.name+'" data-status="'+line.status+'" data-code="'+line.code+'" data-service="'+results.label+'">'+line_img+'</div>';
-		var favorite_row = '<td><div id="'+line_id+'" class="favor">'+favorite_div+'</div></td>';
-		
+		var $row = $('<tr></tr>');
+
+		var $favorite_button = $('<td></td>');
+		$favorite_button.append( line_row(results.label, line) );
+		$row.append( $favorite_button );
 
 		var name = '<td>'+line.name+'</td>';
+		$row.append( name );
+
 		var stat = '<div>'+line.status+'</div>';
 		if (line.text != "") {
 		    stat += '<div>'+line.text+'</div>';
 		    }
 		stat = '<td>'+stat+'</td>';
-		$statusTable.append( '<tr>'+favorite_row+name+stat+'</tr>' );
+		$row.append( stat );
+
+		$statusTable.append( $row );
 		
             });
 	    $res.append( $statusTable );
-            console.log('Successful Ajax Response Ended');
         },
 	
 	
