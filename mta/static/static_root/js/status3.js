@@ -18,7 +18,7 @@ function favorite_row(data) {
 
 function line_image() {
     var img = row_image( 'static/img/favorites-add-icon.jpg' );
-    var $btn = $('<button class="btn btn-primary" type="submit" ondblclick="window.stop();"></button>');
+    var $btn = $('<button class="btn btn-primary" type="submit"></button>');
 
     $btn.append( img );
 
@@ -64,6 +64,19 @@ function get_favorites(){
 $(document).ready(function() {
     get_favorites();
 });
+
+
+$(document).on('click', '.accordion-toggle', function(event) {
+    event.preventDefault();
+
+    //Expand or collapse this panel
+    $(this).next().slideToggle('fast');
+    
+    //Hide the other panels
+    $(".accordion-content").not($(this).next()).slideUp('fast');
+    
+});
+
 
 $(document).on('click', '.favorite-line', function(event) {
     event.preventDefault();
@@ -149,12 +162,15 @@ $('#form-check-service').on('submit', function(event){
 		var name = '<td>'+line.name+'</td>';
 		$row.append( name );
 
-		var stat = '<div>'+line.status+'</div>';
+		var $stat = $('<td><div class="status"></div><div class="details"></div></td>');
+		$stat.find('.status').text(line.status);
+
 		if (line.text != "") {
-		    stat += '<div>'+line.text+'</div>';
-		    }
-		stat = '<td>'+stat+'</td>';
-		$row.append( stat );
+		    $stat.find('.status').addClass( 'accordion-toggle' ).css('color','red');
+		    $stat.find('.details').addClass( 'accordion-content' ).html( line.text ).css('display','none');
+		}
+		
+		$row.append( $stat );
 
 		$statusTable.append( $row );
 		
