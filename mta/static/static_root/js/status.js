@@ -5,7 +5,7 @@ function row_image(src) {
 
 function favorite_row(data) {
     var img = row_image( 'static/img/favorites-remove-icon.jpg' );
-    var $fav = $('<button class="btn btn-primary favorite-line" type="submit"></button>');
+    var $fav = $('<button class="btn btn-primary favorite-line"></button>');
     $fav.attr('data-name', data.name);
     $fav.attr('data-status', data.status);
     $fav.attr('data-service', data.service);
@@ -25,13 +25,10 @@ function line_row(service, data) {
     $fav.attr('data-service', service);
     $fav.attr('data-code', data.code);
 
-    var img = row_image( 'static/img/favorites-add-icon.jpg' );
-    var $btn = $('<button class="btn btn-primary" type="submit"></button>');
+    if (data.is_favorite == 0) {
+	var img = row_image( 'static/img/favorites-add-icon.jpg' );
+	var $btn = $( '<button class="btn btn-primary" type="submit"></button>' );
 
-    if (data.is_favorite == 1) {
-	img = '';
-	btn = $('');
-    } else {
 	$btn.append( img );
 	$fav.append( $btn );
     }

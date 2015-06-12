@@ -44,7 +44,7 @@ class Favorites(object):
     def del_favorite(self, service, name, code, status):
         print '--deleting favorite!!!:'
         try:
-            FavoriteLine.objects.get(user=self.user, code=code).delete()
+            FavoriteLine.objects.filter(user=self.user, code=code).delete()
             return True
 
         except Exception as e:
@@ -54,14 +54,16 @@ class Favorites(object):
     def add_favorite(self, service, name, code, status):
         print '--adding favorite!!:'
         try:
-            f = FavoriteLine()
-            f.user = self.user
-            f.service = service
-            f.name = name
-            f.code = code
-            f.status = status
-            f.save()
-            return True
+            if not FavoriteLine.objects.filter(user=self.user, code=code):
+                f = FavoriteLine()
+                f.user = self.user
+                f.service = service
+                f.name = name
+                f.code = code
+                f.status = status
+                f.save()
+
+                return True
 
         except Exception as e:
             print 'error', str(e)

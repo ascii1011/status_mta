@@ -16,6 +16,14 @@ function favorite_row(data) {
     return $fav;
 };
 
+function line_image() {
+    var img = row_image( 'static/img/favorites-add-icon.jpg' );
+    var $btn = $('<button class="btn btn-primary" type="submit"></button>');
+
+    $btn.append( img );
+
+    return $btn;
+}
 
 function line_row(service, data) {
 
@@ -25,15 +33,8 @@ function line_row(service, data) {
     $fav.attr('data-service', service);
     $fav.attr('data-code', data.code);
 
-    var img = row_image( 'static/img/favorites-add-icon.jpg' );
-    var $btn = $('<button class="btn btn-primary" type="submit"></button>');
-
-    if (data.is_favorite == 1) {
-	img = '';
-	btn = $('');
-    } else {
-	$btn.append( img );
-	$fav.append( $btn );
+    if (data.is_favorite == 0) {
+	$fav.append( line_image() );
     }
 
     return $fav;
@@ -81,7 +82,8 @@ $(document).on('click', '.favorite-line', function(event) {
         data: data,
 	
         success: function(results) {
-	    var $row = line_row( service, data );
+	    //var $row = line_row( service, data );
+	    var $row = line_image();
 	    $(id).append( $row );
         },
     });
