@@ -11,7 +11,7 @@
 <h1>Register for free!</h1>
 <form method="post" action=".">
   {% csrf_token %}
-  {{ form|crispy }}
+  {{ form }}
 
   <input class='btn btn-block btn-primary' type="submit" value="{% trans 'Join' %}" />
 </form>

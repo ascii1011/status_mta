@@ -48,47 +48,28 @@ def add_favorite( request ):
     return JSONHttpResponse( res )
 
 def get_favorites( request ):
-    print 'fav...'
     F = Favorites( request )
     favorites = F.get_db()
-    print 'results:', str(favorites), str(len(favorites))
 
     res = {
         'favorites': favorites,
         #'favorites': [{'line': 'some', 'status':'good'}], #favorites,
     }
 
-    print 'res:', str(res)
-
     return JSONHttpResponse( res )
 
 
 def get_service_status( request ):
-    print 'get_ss'
     if request.method == "GET":
-        print 'is get'
         service = request.GET.get('service')
-        print 'service:', str(service)
         
         #update mta details
         res = process_mta_status( request, service )
 
-        """
-        #this is what the format used to be
-        res = {
-            'label': service,
-            'status': get_cached(service),
-            'timestamp': get_cached('mta_updated'),
-            }
-        """
-
     else:
-        print 'no get'
         res = {"nothing to see": "move along!"}
 
     return JSONHttpResponse( res )
-
-    
 
 
 @csrf_protect

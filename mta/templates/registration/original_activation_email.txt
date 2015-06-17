@@ -5,7 +5,7 @@ Hello there!
 
 Click the link below to activate your account.
 
-http://54.86.130.65:8081/{% url 'registration_activate' activation_key %}
+http://{{ site.domain }}{% url 'registration_activate' activation_key %}
 
 
 {% blocktrans %}The above link is valid for {{ expiration_days }} days.{% endblocktrans %}

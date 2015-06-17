@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'wg8-2z=&r@zaxupr=+%wb&d)wxwy0!!efc4=!ji(z2z-)-5r&g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','54.86.130.65',]
 
 
 # Application definition
@@ -113,10 +113,20 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "media_root")
 
-
+#django-registration-redux
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
 
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
+
+
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST_USER = 'asciiacct0020@yandex.com'
+EMAIL_HOST_PASSWORD = 'K@atR6*K6QZasSrhX$rAM'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'asciiacct0020@yandex.com'
+#EMAIL_USE_SSL = True
