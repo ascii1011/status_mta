@@ -21,25 +21,27 @@
   <h3>Current goals</h3>
   <span>My current mind set has me working on:</span>
   <ul>
+    <li>I will be creating a seperate server for RabbitMQ and Celery in order to kick off the scheduled mining of status information --- working on this now</li>
     <li>A key:value caching layer that will store all of the provider-service-line data for quick recall; I am thinking of using Redis.  The current process is a one off scenario</li>
     <li>Ansible build</li>
   </ul>
 
   <h3>Future goals</h3>
   <ul>
-    <li>I will be creating a seperate server for RabbitMQ and Celery in order to kick off the scheduled mining of status information</li>
     <li>Load Balancer (EC2 initially)</li>
     <li>Geospacial driven content, including ads, alerts, and maps to list a few</li>
+    <li>Abstract settings into environment and have everything referenced from ENV</li>
     <li>Harden with iptables, users, groups, permissions</li>
-    <li>Domain and SSL</li>
+    <li>Domain and SSL and update nginx for main stream with indexing and robot</li>
     <li>Flexible storage, currently using the default for django (sqlite3, not meant for production); I am thinking Casandra (will go into availability later).</li>
-    <li>S3 for local centralized media</li>
+    <li>S3 (with boto) for local centralized media and configs</li>
     <li>Centralized logging</li>
     <li>Vagrant build</li>
     <li>Docker</li>
     <li>Create RDS instance, perhaps MySQL for a live backup</li>
     <li>API perhaps in bottle</li>
     <li>maybe Node.js for frontend</li>
+    <li>CDN</li>
   </ul>
       
 
@@ -49,6 +51,7 @@
     <li>Created an EC2 Security Group (ssh only available to me and port 80 open to all)</li>
     <li>Elastic IP provisioned and assigned to this instance</li>
     <li>Nginx version: 1.4.6</li>
+    <li>Supervisord for Gunicorn</li>
     <li>Gunicorn version: 19.3.0</li>
     <li>Django 1.8</li>
     <li>python 2.7</li>
@@ -60,6 +63,11 @@
     <li>Git</li>
     <li>Virtualenv + PIP</li>
     <li>Boundary Monitoring</li>
+    <li>updates - on a new service box </li>
+    <li>added RabbitMQ</li>
+    <li>added Celery + Flower</li>
+    <li>added Redis + 'redis-cli MONITOR'</li>
+    <li>added fluentd (curl -L https://td-toolbelt.herokuapp.com/sh/install-ubuntu-trusty-td-agent2.sh | sh)</li>
   </ul>
 
   <h3>Other tools</h3>
@@ -67,7 +75,7 @@
     <li>GNU screen</li>
     <li>multitail</li>
     <li>Emacs</li>
-    <li>commands: ls, scp, ssh, grep, head, tail</li>
+    <li>commands: ls, scp, ssh, grep, head, tail, ln...</li>
   </ul>
   
 

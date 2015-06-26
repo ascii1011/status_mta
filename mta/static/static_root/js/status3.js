@@ -163,9 +163,10 @@ $('#form-check-service').on('submit', function(event){
 		$row.append( name );
 
 		var $stat = $('<td><div class="status"></div><div class="details"></div></td>');
-		$stat.find('.status').text(line.status);
+		$stat.find('.status').text(line.status+' (click for details)');
 
 		if (line.text != "") {
+		    $stat.append( '<img href="static/img/arrow-down.png" />' ); 
 		    $stat.find('.status').addClass( 'accordion-toggle' ).css('color','red');
 		    $stat.find('.details').addClass( 'accordion-content' ).html( line.text ).css('display','none');
 		}

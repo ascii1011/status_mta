@@ -5,7 +5,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.conf import settings
 from django.shortcuts import render
 
-from .utils import (process_mta_status, get_services, Favorites)
+from .utils import (process_mta_status, get_services, Favorites, get_redis_value)
+from cache_handlers import ServiceLines
 from .models import FavoriteLine
 
 
@@ -48,12 +49,24 @@ def add_favorite( request ):
     return JSONHttpResponse( res )
 
 def get_favorites( request ):
+    """
+    1. grabs the request for user's favorites
+    2. grabs the users favorites
+    3. hooks into Redis and loops through updating the statuses
+    4. and returns
+    """
+
     F = Favorites( request )
-    favorites = F.get_db()
+    tmp_favorites = F.get_db()
+    sl = ServiceLines()
+
+    favorites = []
+    for f in tmp_favorites:
+        f['status'] = sl.get_service_line( f['code'] )['status']
+        favorites.append( f )
 
     res = {
         'favorites': favorites,
-        #'favorites': [{'line': 'some', 'status':'good'}], #favorites,
     }
 
     return JSONHttpResponse( res )

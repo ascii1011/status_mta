@@ -1,8 +1,15 @@
-
 import urllib2
 import xml.etree.ElementTree as ET
 
+import redis
+
 from .models import FavoriteLine
+
+
+def get_redis_value( key ):
+    pool = redis.ConnectionPool(host='54.173.229.225', port=6379, db=0)
+    r = redis.Redis(connection_pool=pool)
+    return r.hgetall( key )
 
 
 def get_webpage_content( url ):
