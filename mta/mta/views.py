@@ -71,6 +71,12 @@ def get_favorites( request ):
 
     return JSONHttpResponse( res )
 
+def get_lines( service ):
+    lines = []
+    for line in get_service_lines( service ):
+        lines.append( get_redis_value( line ) )
+
+    return lines
 
 def get_service_status( request ):
     if request.method == "GET":
@@ -83,6 +89,7 @@ def get_service_status( request ):
         res = {"nothing to see": "move along!"}
 
     return JSONHttpResponse( res )
+
 
 
 @csrf_protect

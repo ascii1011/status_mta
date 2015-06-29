@@ -6,10 +6,30 @@ import redis
 from .models import FavoriteLine
 
 
-def get_redis_value( key ):
+def normalize_service_code( service ):
+    """
+    Generates the service-line code for redis
+    Atm the moment it assumes all entries are unique
+    """
+    _service = str( service ).replace('   ','-')
+    _service = _service.replace('  ','-')
+    _service = _service.replace(' ','-')
+
+    return _service
+
+def redis_cn():
     pool = redis.ConnectionPool(host='54.173.229.225', port=6379, db=0)
-    r = redis.Redis(connection_pool=pool)
+    return redis.Redis(connection_pool=pool)
+
+def get_redis_value( key ):
+    r = redis_cn()
     return r.hgetall( key )
+
+
+def get_service_lines( service ):
+    r = redis_cn()
+    seed = 'mta-%s-lines' % normalize_service_code( service )
+    return r.smembers( seed )
 
 
 def get_webpage_content( url ):
@@ -131,6 +151,10 @@ def clean_content( request, content, service ):
 
     return data
 
+
+def get_status( service ):
+    return get_lines( service )
+
 def process_mta_status( request, service ):
     """
     MTA data request function
@@ -140,6 +164,7 @@ def process_mta_status( request, service ):
     page_content = get_webpage_content( url )
     
     return clean_content( request, page_content, service )
+    
 
 def get_services():
     _tmp = [
